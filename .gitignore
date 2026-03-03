@@ -1,0 +1,17 @@
+# IntelliJ
+.idea/
+*.iml
+out/
+gen/
+
+# Maven
+target/
+*.war
+
+# Node
+node_modules/
+.next/
+dist/
+
+# Logs
+*.log
