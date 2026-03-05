@@ -1,5 +1,7 @@
 # IntelliJ
 .idea/
+.junie/
+.project_details/
 *.iml
 out/
 gen/
@@ -15,3 +17,6 @@ dist/
 
 # Logs
 *.log
+
+# Custom
+PROJECT_PLAN.md
