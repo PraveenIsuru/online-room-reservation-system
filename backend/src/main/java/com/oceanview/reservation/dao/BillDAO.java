@@ -8,4 +8,5 @@ public interface BillDAO {
     int create(Bill bill);
     Bill findByReservationId(int reservationId);
     boolean updateStatus(int billId, BillStatus status, PaymentMethod method);
+    java.math.BigDecimal getTotalRevenue();
 }

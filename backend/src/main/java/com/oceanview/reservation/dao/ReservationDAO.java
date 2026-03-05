@@ -11,4 +11,5 @@ public interface ReservationDAO {
     boolean existsRoomConflict(int roomId, LocalDate checkIn, LocalDate checkOut, Integer excludeReservationId);
     Reservation findById(int reservationId);
     Reservation findByNumber(String reservationNumber);
+    int getActiveReservationCount();
 }

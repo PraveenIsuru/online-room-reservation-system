@@ -63,6 +63,22 @@ public class BillDAOImpl implements BillDAO {
         }
     }
 
+    @Override
+    public java.math.BigDecimal getTotalRevenue() {
+        String sql = "SELECT SUM(total_amount) FROM bills WHERE status = 'PAID'";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                BigDecimal revenue = rs.getBigDecimal(1);
+                return revenue != null ? revenue : BigDecimal.ZERO;
+            }
+            return BigDecimal.ZERO;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching total revenue", e);
+        }
+    }
+
     private Bill map(ResultSet rs) throws SQLException {
         Bill b = new Bill();
         b.setBillId(rs.getInt("bill_id"));

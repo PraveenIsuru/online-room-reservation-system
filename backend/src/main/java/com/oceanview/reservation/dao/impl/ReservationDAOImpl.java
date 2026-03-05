@@ -123,6 +123,21 @@ public class ReservationDAOImpl implements ReservationDAO {
         }
     }
 
+    @Override
+    public int getActiveReservationCount() {
+        String sql = "SELECT COUNT(*) FROM reservations WHERE status IN ('PENDING', 'CONFIRMED', 'CHECKED_IN')";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error counting active reservations", e);
+        }
+    }
+
     private Reservation map(ResultSet rs) throws SQLException {
         Reservation r = new Reservation();
         r.setReservationId(rs.getInt("reservation_id"));

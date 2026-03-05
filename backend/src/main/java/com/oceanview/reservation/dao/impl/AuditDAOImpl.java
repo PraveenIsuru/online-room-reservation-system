@@ -24,5 +24,32 @@ public class AuditDAOImpl implements AuditDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error inserting audit log", e);
         }
+    @Override
+    public java.util.List<AuditLog> findAll() {
+        java.util.List<AuditLog> logs = new java.util.ArrayList<>();
+        String sql = "SELECT * FROM audit_log ORDER BY action_time DESC";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                AuditLog log = new AuditLog();
+                log.setLogId(rs.getInt("log_id"));
+                int userId = rs.getInt("user_id");
+                log.setUserId(rs.wasNull() ? null : userId);
+                log.setAction(rs.getString("action"));
+                log.setEntityType(rs.getString("entity_type"));
+                int entityId = rs.getInt("entity_id");
+                log.setEntityId(rs.wasNull() ? null : entityId);
+                log.setOldValue(rs.getString("old_value"));
+                log.setNewValue(rs.getString("new_value"));
+                Timestamp ts = rs.getTimestamp("action_time");
+                if (ts != null) log.setActionTime(ts.toLocalDateTime());
+                log.setIpAddress(rs.getString("ip_address"));
+                logs.add(log);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching audit logs", e);
+        }
+        return logs;
     }
 }
