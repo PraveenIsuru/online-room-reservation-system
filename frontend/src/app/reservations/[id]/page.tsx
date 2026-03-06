@@ -46,7 +46,6 @@ export default function ReservationDetailPage() {
         setBill(billResponse.data);
       } catch (e) {
         // Bill might not exist yet if not checked in/out depending on backend logic
-        console.log('No bill found for this reservation');
       }
     } catch (err: any) {
       setError(err.message || 'Failed to load reservation details');
