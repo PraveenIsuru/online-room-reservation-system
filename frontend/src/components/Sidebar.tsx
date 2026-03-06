@@ -26,7 +26,7 @@ const Sidebar = () => {
     { label: 'Guests', icon: Users, href: '/guests' },
     { label: 'Rooms', icon: Bed, href: '/rooms' },
     { label: 'Billing', icon: CreditCard, href: '/billing' },
-    { label: 'Reports', icon: BarChart, href: '/reports', adminOnly: true },
+    { label: 'Reports', icon: BarChart, href: '/reports/revenue', adminOnly: true },
     { label: 'Help', icon: HelpCircle, href: '/help' },
   ];
 
