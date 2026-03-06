@@ -10,13 +10,17 @@ import {
   TrendingUp, 
   Calendar, 
   Loader2,
-  AlertCircle
+  AlertCircle,
+  CheckCircle
 } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const successMsg = searchParams.get('success');
 
   useEffect(() => {
     async function fetchStats() {
@@ -99,6 +103,13 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
         <p className="text-gray-500">Welcome to Ocean View Resort management portal.</p>
       </div>
+
+      {successMsg === 'reservation_created' && (
+        <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded shadow-sm flex items-center gap-3">
+          <CheckCircle className="text-green-600 h-6 w-6" />
+          <span className="text-green-800 font-medium">Reservation has been successfully created!</span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {kpis.map((kpi, index) => (
