@@ -24,6 +24,8 @@ public class AuditDAOImpl implements AuditDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error inserting audit log", e);
         }
+    }
+
     @Override
     public java.util.List<AuditLog> findAll() {
         java.util.List<AuditLog> logs = new java.util.ArrayList<>();

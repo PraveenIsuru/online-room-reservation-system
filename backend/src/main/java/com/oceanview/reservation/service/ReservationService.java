@@ -16,11 +16,23 @@ import java.time.LocalDateTime;
 
 public class ReservationService {
 
-    private final ReservationDAO reservationDAO = DAOFactory.getReservationDAO();
-    private final RoomDAO roomDAO = DAOFactory.getRoomDAO();
-    private final AuditDAO auditDAO = DAOFactory.getAuditDAO();
-    private final BillingService billingService = new BillingService();
-    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final ReservationDAO reservationDAO;
+    private final RoomDAO roomDAO;
+    private final AuditDAO auditDAO;
+    private final BillingService billingService;
+    private final ObjectMapper objectMapper;
+
+    public ReservationService() {
+        this(DAOFactory.getReservationDAO(), DAOFactory.getRoomDAO(), DAOFactory.getAuditDAO(), new BillingService());
+    }
+
+    public ReservationService(ReservationDAO reservationDAO, RoomDAO roomDAO, AuditDAO auditDAO, BillingService billingService) {
+        this.reservationDAO = reservationDAO;
+        this.roomDAO = roomDAO;
+        this.auditDAO = auditDAO;
+        this.billingService = billingService;
+        this.objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    }
 
     public Reservation createReservation(Reservation reservation, Integer userId, String ipAddress) {
         // 1. Check availability

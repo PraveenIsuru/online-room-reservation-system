@@ -5,6 +5,7 @@ import com.oceanview.reservation.model.Bill;
 import com.oceanview.reservation.model.enums.BillStatus;
 import com.oceanview.reservation.model.enums.PaymentMethod;
 import com.oceanview.reservation.util.DatabaseConnection;
+import java.math.BigDecimal;
 import java.sql.*;
 
 public class BillDAOImpl implements BillDAO {

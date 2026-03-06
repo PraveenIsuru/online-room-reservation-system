@@ -20,11 +20,23 @@ import java.time.LocalDateTime;
 
 public class BillingService {
 
-    private final BillDAO billDAO = DAOFactory.getBillDAO();
-    private final RoomDAO roomDAO = DAOFactory.getRoomDAO();
-    private final AuditDAO auditDAO = DAOFactory.getAuditDAO();
-    private final BillingStrategy billingStrategy = new StandardBillingStrategy();
-    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final BillDAO billDAO;
+    private final RoomDAO roomDAO;
+    private final AuditDAO auditDAO;
+    private final BillingStrategy billingStrategy;
+    private final ObjectMapper objectMapper;
+
+    public BillingService() {
+        this(DAOFactory.getBillDAO(), DAOFactory.getRoomDAO(), DAOFactory.getAuditDAO(), new StandardBillingStrategy());
+    }
+
+    public BillingService(BillDAO billDAO, RoomDAO roomDAO, AuditDAO auditDAO, BillingStrategy billingStrategy) {
+        this.billDAO = billDAO;
+        this.roomDAO = roomDAO;
+        this.auditDAO = auditDAO;
+        this.billingStrategy = billingStrategy;
+        this.objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    }
 
     public Bill generateBill(Reservation reservation) {
         Room room = roomDAO.findById(reservation.getRoomId());
