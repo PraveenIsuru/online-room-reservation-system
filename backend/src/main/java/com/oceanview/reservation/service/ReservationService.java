@@ -79,7 +79,7 @@ public class ReservationService {
                 roomDAO.updateStatus(oldReservation.getRoomId(), RoomStatus.AVAILABLE);
             }
             
-            logAudit(userId, "UPDATE", "RESERVATION", id, "Status: " + oldReservation.getStatus(), "Status: " + newStatus, ipAddress);
+            logAudit(userId, "UPDATE", "RESERVATION", id, "{\"status\": \"" + oldReservation.getStatus() + "\"}", "{\"status\": \"" + newStatus + "\"}", ipAddress);
         }
         return updated;
     }

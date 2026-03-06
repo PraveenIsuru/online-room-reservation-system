@@ -8,8 +8,13 @@ import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.security.Principal;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
@@ -39,7 +44,31 @@ public class AuthFilter implements ContainerRequestFilter, ContainerResponseFilt
 
         String token = authHeader.substring(7);
         try {
-            JwtUtil.validateToken(token);
+            final io.jsonwebtoken.Claims claims = JwtUtil.validateToken(token);
+            final String role = claims.get("role", String.class);
+            final String username = claims.get("username", String.class);
+
+            requestContext.setSecurityContext(new SecurityContext() {
+                @Override
+                public Principal getUserPrincipal() {
+                    return () -> username;
+                }
+
+                @Override
+                public boolean isUserInRole(String r) {
+                    return role != null && role.equalsIgnoreCase(r);
+                }
+
+                @Override
+                public boolean isSecure() {
+                    return requestContext.getSecurityContext().isSecure();
+                }
+
+                @Override
+                public String getAuthenticationScheme() {
+                    return "Bearer";
+                }
+            });
         } catch (Exception e) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                 .entity("Invalid or expired token")

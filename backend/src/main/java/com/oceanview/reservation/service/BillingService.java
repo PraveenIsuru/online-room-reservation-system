@@ -66,7 +66,7 @@ public class BillingService {
         // Here we could add more logic for actual payment processing
         boolean updated = billDAO.updateStatus(billId, BillStatus.PAID, paymentMethod);
         if (updated) {
-            logAudit(userId, "UPDATE", "BILL", billId, "Status: PENDING", "Status: PAID, Method: " + paymentMethod, ipAddress);
+            logAudit(userId, "UPDATE", "BILL", billId, "{\"status\": \"PENDING\"}", "{\"status\": \"PAID\", \"method\": \"" + paymentMethod + "\"}", ipAddress);
         }
         return updated;
     }

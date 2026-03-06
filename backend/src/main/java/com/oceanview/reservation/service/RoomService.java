@@ -38,7 +38,7 @@ public class RoomService {
 
         boolean updated = roomDAO.updateStatus(roomId, newStatus);
         if (updated) {
-            logAudit(userId, "UPDATE", "ROOM", roomId, "Status: " + oldRoom.getStatus(), "Status: " + newStatus, ipAddress);
+            logAudit(userId, "UPDATE", "ROOM", roomId, "{\"status\": \"" + oldRoom.getStatus() + "\"}", "{\"status\": \"" + newStatus + "\"}", ipAddress);
         }
         return updated;
     }
