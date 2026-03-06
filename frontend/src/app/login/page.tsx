@@ -50,42 +50,42 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F4F7F6] px-4">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-[#F4F7F6] px-4 py-8">
+      <div className="max-w-md w-full space-y-6 md:space-y-8 bg-white p-6 md:p-10 rounded-xl shadow-lg border border-gray-100">
         <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-[#0B3D6E] rounded-full flex items-center justify-center mb-4">
-            <span className="text-white text-2xl font-bold italic">OV</span>
+          <div className="mx-auto h-12 w-12 md:h-16 md:w-16 bg-[#0B3D6E] rounded-full flex items-center justify-center mb-3 md:mb-4">
+            <span className="text-white text-xl md:text-2xl font-bold italic">OV</span>
           </div>
-          <h2 className="text-3xl font-extrabold text-gray-900">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900">
             Ocean View Resort
           </h2>
-          <p className="mt-2 text-sm text-gray-600 font-medium">
+          <p className="mt-2 text-xs md:text-sm text-gray-600 font-medium">
             Management System Login
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-6 md:mt-8 space-y-5 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-              <p className="text-sm text-red-700 font-medium">{error}</p>
+            <div className="bg-red-50 border-l-4 border-red-500 p-3 md:p-4 mb-4">
+              <p className="text-xs md:text-sm text-red-700 font-medium">{error}</p>
             </div>
           )}
 
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-1">
+              <label htmlFor="username" className="block text-xs md:text-sm font-semibold text-gray-700 mb-1">
                 Username
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+                  <User className="h-4 w-4 md:h-5 md:w-5 text-gray-400" />
                 </div>
                 <input
                   {...register('username')}
                   type="text"
-                  className={`appearance-none block w-full pl-10 pr-3 py-3 border ${
+                  className={`appearance-none block w-full pl-9 md:pl-10 pr-3 py-2.5 md:py-3 border ${
                     errors.username ? 'border-red-500' : 'border-gray-300'
-                  } rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0B3D6E] focus:border-transparent transition-all sm:text-sm`}
+                  } rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0B3D6E] focus:border-transparent transition-all text-sm`}
                   placeholder="Enter your username"
                 />
               </div>
@@ -95,19 +95,19 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-1">
+              <label htmlFor="password" className="block text-xs md:text-sm font-semibold text-gray-700 mb-1">
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-4 w-4 md:h-5 md:w-5 text-gray-400" />
                 </div>
                 <input
                   {...register('password')}
                   type="password"
-                  className={`appearance-none block w-full pl-10 pr-3 py-3 border ${
+                  className={`appearance-none block w-full pl-9 md:pl-10 pr-3 py-2.5 md:py-3 border ${
                     errors.password ? 'border-red-500' : 'border-gray-300'
-                  } rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0B3D6E] focus:border-transparent transition-all sm:text-sm`}
+                  } rounded-lg placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0B3D6E] focus:border-transparent transition-all text-sm`}
                   placeholder="Enter your password"
                 />
               </div>
@@ -121,10 +121,10 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-[#0B3D6E] hover:bg-[#082d52] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0B3D6E] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2.5 md:py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-[#0B3D6E] hover:bg-[#082d52] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0B3D6E] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
-                <Loader2 className="animate-spin h-5 w-5" />
+                <Loader2 className="animate-spin h-4 w-4 md:h-5 md:w-5" />
               ) : (
                 'Sign In'
               )}

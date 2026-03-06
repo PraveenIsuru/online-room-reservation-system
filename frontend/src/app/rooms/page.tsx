@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { api } from '../lib/api';
-import { Room, RoomStatus } from '../types';
-import { 
-  Bed, 
-  Loader2, 
+import { api } from '../../lib/api';
+import { Room, RoomStatus } from '../../types';
+import {
+  Bed,
+  Loader2,
   AlertCircle,
   Settings,
   CheckCircle2,
@@ -14,6 +14,7 @@ import {
   Search,
   Filter
 } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
 export default function RoomsPage() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -22,6 +23,10 @@ export default function RoomsPage() {
   const [updating, setUpdating] = useState<number | null>(null);
   const [filter, setFilter] = useState<string>('');
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    document.title = 'Rooms - Ocean View Resort';
+  }, []);
 
   useEffect(() => {
     fetchRooms();
@@ -69,11 +74,11 @@ export default function RoomsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6 p-4 md:p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Rooms Management</h1>
-          <p className="text-gray-500 text-sm">Monitor and manage room statuses and availability.</p>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800">Rooms Management</h1>
+          <p className="text-xs md:text-sm text-gray-500 mt-1">Monitor and manage room statuses and availability.</p>
         </div>
       </div>
 
@@ -105,73 +110,73 @@ export default function RoomsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
         {filteredRooms.length === 0 ? (
-          <div className="col-span-full py-12 text-center text-gray-500 bg-white rounded-xl border border-dashed border-gray-300">
+          <div className="col-span-full py-8 md:py-12 text-center text-sm md:text-base text-gray-500 bg-white rounded-xl border border-dashed border-gray-300">
             No rooms matching your criteria.
           </div>
         ) : (
           filteredRooms.map((room) => (
-            <div key={room.roomId} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+            <div key={room.roomId} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
               <div className={cn(
-                "p-4 flex justify-between items-center",
-                room.status === 'AVAILABLE' ? "bg-green-50" : 
-                room.status === 'OCCUPIED' ? "bg-blue-50" : 
+                "p-3 md:p-4 flex justify-between items-center",
+                room.status === 'AVAILABLE' ? "bg-green-50" :
+                room.status === 'OCCUPIED' ? "bg-blue-50" :
                 room.status === 'MAINTENANCE' ? "bg-red-50" : "bg-orange-50"
               )}>
                 <div className="flex items-center gap-2">
                   <div className={cn(
-                    "p-2 rounded-lg",
-                    room.status === 'AVAILABLE' ? "bg-green-100 text-green-700" : 
-                    room.status === 'OCCUPIED' ? "bg-blue-100 text-blue-700" : 
+                    "p-1.5 md:p-2 rounded-lg",
+                    room.status === 'AVAILABLE' ? "bg-green-100 text-green-700" :
+                    room.status === 'OCCUPIED' ? "bg-blue-100 text-blue-700" :
                     room.status === 'MAINTENANCE' ? "bg-red-100 text-red-700" : "bg-orange-100 text-orange-700"
                   )}>
-                    <Bed size={18} />
+                    <Bed size={16} className="md:w-[18px] md:h-[18px]" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 font-bold uppercase tracking-wider leading-none">Floor {room.floorNumber}</p>
-                    <p className="text-lg font-bold text-gray-800 leading-tight">Room {room.roomNumber}</p>
+                    <p className="text-base md:text-lg font-bold text-gray-800 leading-tight">Room {room.roomNumber}</p>
                   </div>
                 </div>
                 <div className={cn(
-                  "px-2 py-0.5 rounded text-[10px] font-bold uppercase",
-                  room.status === 'AVAILABLE' ? "bg-green-200 text-green-800" : 
-                  room.status === 'OCCUPIED' ? "bg-blue-200 text-blue-800" : 
+                  "px-1.5 md:px-2 py-0.5 rounded text-[9px] md:text-[10px] font-bold uppercase",
+                  room.status === 'AVAILABLE' ? "bg-green-200 text-green-800" :
+                  room.status === 'OCCUPIED' ? "bg-blue-200 text-blue-800" :
                   room.status === 'MAINTENANCE' ? "bg-red-200 text-red-800" : "bg-orange-200 text-orange-800"
                 )}>
                   {room.status}
                 </div>
               </div>
 
-              <div className="p-4 flex-1 space-y-4">
+              <div className="p-3 md:p-4 flex-1 space-y-3 md:space-y-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{room.roomTypeDisplay}</p>
-                  <p className="text-xs text-gray-500">{room.description || 'No description'}</p>
+                  <p className="text-xs md:text-sm font-medium text-gray-900">{room.roomTypeDisplay}</p>
+                  <p className="text-xs text-gray-500 line-clamp-2">{room.description || 'No description'}</p>
                 </div>
-                
-                <div className="pt-4 border-t border-gray-50 flex items-center justify-between">
-                  <span className="text-sm font-bold text-[#0B3D6E]">LKR {room.pricePerNight.toLocaleString()}</span>
+
+                <div className="pt-3 md:pt-4 border-t border-gray-50 flex items-center justify-between">
+                  <span className="text-xs md:text-sm font-bold text-[#0B3D6E]">LKR {room.pricePerNight.toLocaleString()}</span>
                   <span className="text-xs text-gray-400">per night</span>
                 </div>
               </div>
 
-              <div className="p-4 bg-gray-50 border-t border-gray-100 flex gap-2">
+              <div className="p-3 md:p-4 bg-gray-50 border-t border-gray-100 flex gap-2">
                 {room.status === 'AVAILABLE' && (
-                  <button 
+                  <button
                     onClick={() => handleStatusUpdate(room.roomId, 'MAINTENANCE')}
                     disabled={updating === room.roomId}
-                    className="flex-1 py-2 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 transition-colors flex items-center justify-center gap-1 disabled:opacity-50"
+                    className="flex-1 py-1.5 md:py-2 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 transition-colors flex items-center justify-center gap-1 disabled:opacity-50"
                   >
-                    <Hammer size={14} /> Maintenance
+                    <Hammer size={12} className="md:w-[14px] md:h-[14px]" /> Maintenance
                   </button>
                 )}
                 {room.status === 'MAINTENANCE' && (
-                  <button 
+                  <button
                     onClick={() => handleStatusUpdate(room.roomId, 'AVAILABLE')}
                     disabled={updating === room.roomId}
-                    className="flex-1 py-2 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700 transition-colors flex items-center justify-center gap-1 disabled:opacity-50"
+                    className="flex-1 py-1.5 md:py-2 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700 transition-colors flex items-center justify-center gap-1 disabled:opacity-50"
                   >
-                    <CheckCircle2 size={14} /> Set Available
+                    <CheckCircle2 size={12} className="md:w-[14px] md:h-[14px]" /> Set Available
                   </button>
                 )}
                 {room.status === 'OCCUPIED' && (

@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { api } from '../../lib/api';
-import { Bill } from '../../types';
+import { api } from '../../../lib/api';
+import { Bill } from '../../../types';
 import { 
   ArrowLeft, 
   Printer, 
@@ -94,7 +94,7 @@ export default function BillDetailPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-12">
+    <div className="max-w-4xl mx-auto space-y-6 pb-12 pt-8">
       <div className="flex items-center justify-between no-print">
         <button 
           onClick={() => router.back()}

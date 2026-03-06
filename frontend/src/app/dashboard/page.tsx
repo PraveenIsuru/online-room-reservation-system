@@ -1,21 +1,25 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { api } from '../lib/api';
-import { DashboardStats } from '../types';
-import { 
-  Users, 
-  DoorOpen, 
-  LogOut, 
-  TrendingUp, 
-  Calendar, 
+import { api } from '../../lib/api';
+import { DashboardStats } from '../../types';
+import {
+  Users,
+  DoorOpen,
+  LogOut,
+  TrendingUp,
+  Calendar,
   Loader2,
   AlertCircle,
   CheckCircle
 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import Head from 'next/head';
 
 export default function DashboardPage() {
+  useEffect(() => {
+    document.title = 'Dashboard - Ocean View Resort';
+  }, []);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -98,10 +102,10 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8 p-4 md:p-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard Overview</h1>
-        <p className="text-gray-500">Welcome to Ocean View Resort management portal.</p>
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800">Dashboard Overview</h1>
+        <p className="text-sm md:text-base text-gray-500 mt-1">Welcome to Ocean View Resort management portal.</p>
       </div>
 
       {successMsg === 'reservation_created' && (
@@ -111,26 +115,26 @@ export default function DashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {kpis.map((kpi, index) => (
-          <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center space-x-4">
-            <div className={`p-3 rounded-lg ${kpi.bgColor}`}>
-              <kpi.icon className={`h-6 w-6 ${kpi.textColor}`} />
+          <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 flex items-center space-x-3 md:space-x-4 hover:shadow-md transition-shadow">
+            <div className={`p-2 md:p-3 rounded-lg ${kpi.bgColor} shrink-0`}>
+              <kpi.icon className={`h-5 w-5 md:h-6 md:w-6 ${kpi.textColor}`} />
             </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">{kpi.title}</p>
-              <p className="text-2xl font-bold text-gray-900">{kpi.value}</p>
+            <div className="min-w-0">
+              <p className="text-xs md:text-sm font-medium text-gray-500 truncate">{kpi.title}</p>
+              <p className="text-lg md:text-2xl font-bold text-gray-900">{kpi.value}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-gray-800">Current Occupancy</h2>
-            <span className="text-sm text-gray-500 flex items-center">
-              <Calendar className="h-4 w-4 mr-1" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
+            <h2 className="text-base md:text-lg font-bold text-gray-800">Current Occupancy</h2>
+            <span className="text-xs md:text-sm text-gray-500 flex items-center">
+              <Calendar className="h-3 w-3 md:h-4 md:w-4 mr-1" />
               {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </span>
           </div>
@@ -156,34 +160,34 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-lg bg-gray-50 border border-gray-100">
-              <p className="text-sm text-gray-500 mb-1">Total Guests This Month</p>
-              <p className="text-xl font-bold text-gray-800">{stats.totalGuestsThisMonth}</p>
+          <div className="mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+            <div className="p-3 md:p-4 rounded-lg bg-gray-50 border border-gray-100">
+              <p className="text-xs md:text-sm text-gray-500 mb-1">Total Guests This Month</p>
+              <p className="text-lg md:text-xl font-bold text-gray-800">{stats.totalGuestsThisMonth}</p>
             </div>
-            <div className="p-4 rounded-lg bg-gray-50 border border-gray-100">
-              <p className="text-sm text-gray-500 mb-1">Available Rooms</p>
-              <p className="text-xl font-bold text-gray-800">{stats.totalRooms - stats.currentOccupancy}</p>
+            <div className="p-3 md:p-4 rounded-lg bg-gray-50 border border-gray-100">
+              <p className="text-xs md:text-sm text-gray-500 mb-1">Available Rooms</p>
+              <p className="text-lg md:text-xl font-bold text-gray-800">{stats.totalRooms - stats.currentOccupancy}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-[#0B3D6E] rounded-xl shadow-lg p-6 text-white flex flex-col justify-between">
+        <div className="bg-[#0B3D6E] rounded-xl shadow-lg p-4 md:p-6 text-white flex flex-col justify-between">
           <div>
-            <h2 className="text-lg font-bold mb-4">Quick Actions</h2>
-            <div className="space-y-3">
-              <a href="/dashboard/reservations/new" className="block w-full py-3 px-4 bg-white/10 hover:bg-white/20 rounded-lg text-center font-medium transition-colors border border-white/10">
+            <h2 className="text-base md:text-lg font-bold mb-3 md:mb-4">Quick Actions</h2>
+            <div className="space-y-2 md:space-y-3">
+              <a href="/dashboard/reservations/new" className="block w-full py-2.5 md:py-3 px-3 md:px-4 bg-white/10 hover:bg-white/20 rounded-lg text-center text-sm md:text-base font-medium transition-colors border border-white/10">
                 New Reservation
               </a>
-              <a href="/dashboard/guests" className="block w-full py-3 px-4 bg-white/10 hover:bg-white/20 rounded-lg text-center font-medium transition-colors border border-white/10">
+              <a href="/dashboard/guests" className="block w-full py-2.5 md:py-3 px-3 md:px-4 bg-white/10 hover:bg-white/20 rounded-lg text-center text-sm md:text-base font-medium transition-colors border border-white/10">
                 Register New Guest
               </a>
-              <a href="/dashboard/rooms" className="block w-full py-3 px-4 bg-white/10 hover:bg-white/20 rounded-lg text-center font-medium transition-colors border border-white/10">
+              <a href="/dashboard/rooms" className="block w-full py-2.5 md:py-3 px-3 md:px-4 bg-white/10 hover:bg-white/20 rounded-lg text-center text-sm md:text-base font-medium transition-colors border border-white/10">
                 Check Room Status
               </a>
             </div>
           </div>
-          <div className="mt-8 pt-6 border-t border-white/10">
+          <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-white/10">
             <p className="text-xs text-white/60 italic">
               "Providing excellence in hospitality since 2024."
             </p>

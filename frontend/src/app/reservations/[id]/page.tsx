@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { api } from '../../lib/api';
-import { Reservation, ReservationStatus, Bill } from '../../types';
+import { api } from '../../../lib/api';
+import { Reservation, ReservationStatus, Bill } from '../../../types';
 import { 
   ArrowLeft, 
   Calendar, 
@@ -16,7 +16,8 @@ import {
   AlertCircle,
   CheckCircle2,
   XCircle,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -94,7 +95,7 @@ export default function ReservationDetailPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pt-8">
         <button 
           onClick={() => router.back()}
           className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"

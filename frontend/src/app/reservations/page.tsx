@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { api } from '../lib/api';
-import { Reservation } from '../types';
-import { 
-  Calendar, 
-  Search, 
-  Filter, 
-  Loader2, 
-  ChevronLeft, 
+import { api } from '../../lib/api';
+import { Reservation } from '../../types';
+import {
+  Calendar,
+  Search,
+  Filter,
+  Loader2,
+  ChevronLeft,
   ChevronRight,
   Eye,
   CheckCircle2,
@@ -17,9 +17,11 @@ import {
   XCircle
 } from 'lucide-react';
 import Link from 'next/link';
-import { cn } from '../lib/utils';
 
 export default function ReservationsPage() {
+  useEffect(() => {
+    document.title = 'Reservations - Ocean View Resort';
+  }, []);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
@@ -76,15 +78,15 @@ export default function ReservationsPage() {
   const totalPages = Math.ceil(total / pageSize);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6 p-4 md:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Reservations</h1>
-          <p className="text-gray-500 text-sm">Manage resort bookings and guest stays.</p>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800">Reservations</h1>
+          <p className="text-xs md:text-sm text-gray-500 mt-1">Manage resort bookings and guest stays.</p>
         </div>
-        <Link 
-          href="/dashboard" // Assuming we want a way to create new ones easily, or go to dashboard
-          className="bg-[#0B3D6E] text-white px-4 py-2 rounded-lg hover:bg-[#0B3D6E]/90 transition-colors text-sm font-medium"
+        <Link
+          href="/dashboard"
+          className="bg-[#0B3D6E] text-white px-4 py-2 rounded-lg hover:bg-[#0B3D6E]/90 transition-colors text-sm font-medium text-center whitespace-nowrap"
         >
           New Reservation
         </Link>
@@ -120,15 +122,15 @@ export default function ReservationsPage() {
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full text-left min-w-[640px]">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Res. Number</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Guest</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Room</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Stay Dates</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Res. Number</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Guest</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Room</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Stay Dates</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -148,28 +150,28 @@ export default function ReservationsPage() {
               ) : (
                 reservations.map((res) => (
                   <tr key={res.reservationId} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{res.reservationNumber}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{res.guestName}</div>
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">{res.reservationNumber}</td>
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                      <div className="text-xs md:text-sm font-medium text-gray-900">{res.guestName}</div>
                       <div className="text-xs text-gray-500">{res.contactNumber}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">Room {res.roomNumber}</div>
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                      <div className="text-xs md:text-sm text-gray-900">Room {res.roomNumber}</div>
                       <div className="text-xs text-gray-500">{res.roomType}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{res.checkInDate} to {res.checkOutDate}</div>
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden sm:table-cell">
+                      <div className="text-xs md:text-sm text-gray-900">{res.checkInDate} to {res.checkOutDate}</div>
                       <div className="text-xs text-gray-500">{res.nights} nights</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
                       {getStatusBadge(res.status)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Link 
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                      <Link
                         href={`/reservations/${res.reservationId}`}
-                        className="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center gap-1"
+                        className="text-blue-600 hover:text-blue-800 font-medium text-xs md:text-sm flex items-center gap-1"
                       >
-                        <Eye size={16} /> View Details
+                        <Eye size={14} className="md:w-4 md:h-4" /> <span className="hidden sm:inline">View Details</span><span className="sm:hidden">View</span>
                       </Link>
                     </td>
                   </tr>
@@ -180,24 +182,24 @@ export default function ReservationsPage() {
         </div>
 
         {totalPages > 1 && (
-          <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-sm text-gray-500">
+          <div className="px-3 md:px-6 py-3 md:py-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs md:text-sm text-gray-500">
               Showing {(page - 1) * pageSize + 1} to {Math.min(page * pageSize, total)} of {total}
             </span>
             <div className="flex gap-2">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
+                className="p-1.5 md:p-2 border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={18} className="md:w-5 md:h-5" />
               </button>
               <button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-2 border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
+                className="p-1.5 md:p-2 border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={18} className="md:w-5 md:h-5" />
               </button>
             </div>
           </div>

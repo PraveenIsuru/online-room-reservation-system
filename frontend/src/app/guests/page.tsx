@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { api } from '../lib/api';
-import { Guest } from '../types';
-import { 
-  Users, 
-  Search, 
-  Loader2, 
-  ChevronLeft, 
+import { api } from '../../lib/api';
+import { Guest } from '../../types';
+import {
+  Users,
+  Search,
+  Loader2,
+  ChevronLeft,
   ChevronRight,
   Eye,
   Mail,
@@ -24,6 +24,10 @@ export default function GuestsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const pageSize = 10;
+
+  useEffect(() => {
+    document.title = 'Guests - Ocean View Resort';
+  }, []);
 
   useEffect(() => {
     fetchGuests();
@@ -57,15 +61,15 @@ export default function GuestsPage() {
   const totalPages = Math.ceil(total / pageSize);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6 p-4 md:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Guest Management</h1>
-          <p className="text-gray-500 text-sm">View and manage resort guest records.</p>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800">Guest Management</h1>
+          <p className="text-xs md:text-sm text-gray-500 mt-1">View and manage resort guest records.</p>
         </div>
-        <Link 
-          href="/dashboard" 
-          className="bg-[#0B3D6E] text-white px-4 py-2 rounded-lg hover:bg-[#0B3D6E]/90 transition-colors text-sm font-medium flex items-center gap-2"
+        <Link
+          href="/dashboard"
+          className="bg-[#0B3D6E] text-white px-4 py-2 rounded-lg hover:bg-[#0B3D6E]/90 transition-colors text-sm font-medium flex items-center justify-center gap-2 whitespace-nowrap"
         >
           <Plus size={18} /> Register Guest
         </Link>
@@ -86,15 +90,15 @@ export default function GuestsPage() {
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full text-left min-w-[640px]">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Guest Name</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact Info</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Location</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Reservations</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Member Since</th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Guest Name</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact Info</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Location</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Reservations</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden md:table-cell">Member Since</th>
+                <th className="px-3 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -114,43 +118,43 @@ export default function GuestsPage() {
               ) : (
                 guests.map((guest) => (
                   <tr key={guest.guestId} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xs md:text-sm shrink-0">
                           {guest.guestName.charAt(0)}
                         </div>
-                        <div className="text-sm font-medium text-gray-900">{guest.guestName}</div>
+                        <div className="text-xs md:text-sm font-medium text-gray-900 truncate">{guest.guestName}</div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
                       <div className="flex flex-col gap-1">
                         <div className="text-xs text-gray-600 flex items-center gap-1">
                           <Phone size={12} /> {guest.contactNumber}
                         </div>
-                        <div className="text-xs text-gray-600 flex items-center gap-1">
-                          <Mail size={12} /> {guest.email || 'N/A'}
+                        <div className="text-xs text-gray-600 flex items-center gap-1 truncate max-w-[150px]">
+                          <Mail size={12} className="shrink-0" /> {guest.email || 'N/A'}
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden lg:table-cell">
                       <div className="text-xs text-gray-600 flex items-center gap-1 max-w-[200px] truncate">
                         <MapPin size={12} className="shrink-0" /> {guest.address || 'N/A'}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden sm:table-cell">
                       <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-medium">
                         {guest.reservationCount || 0} bookings
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500 hidden md:table-cell">
                       {new Date(guest.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <Link 
+                    <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                      <Link
                         href={`/guests/${guest.guestId}`}
-                        className="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center gap-1"
+                        className="text-blue-600 hover:text-blue-800 font-medium text-xs md:text-sm flex items-center gap-1"
                       >
-                        <Eye size={16} /> Profile
+                        <Eye size={14} className="md:w-4 md:h-4" /> <span className="hidden sm:inline">Profile</span>
                       </Link>
                     </td>
                   </tr>
@@ -161,24 +165,24 @@ export default function GuestsPage() {
         </div>
 
         {totalPages > 1 && (
-          <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-sm text-gray-500">
+          <div className="px-3 md:px-6 py-3 md:py-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-xs md:text-sm text-gray-500">
               Showing {(page - 1) * pageSize + 1} to {Math.min(page * pageSize, total)} of {total}
             </span>
             <div className="flex gap-2">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="p-2 border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
+                className="p-1.5 md:p-2 border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={18} className="md:w-5 md:h-5" />
               </button>
               <button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="p-2 border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
+                className="p-1.5 md:p-2 border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={18} className="md:w-5 md:h-5" />
               </button>
             </div>
           </div>

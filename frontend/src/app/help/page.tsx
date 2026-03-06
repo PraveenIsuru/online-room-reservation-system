@@ -1,19 +1,22 @@
 'use client';
 
-import React from 'react';
-import { 
-  HelpCircle, 
-  BookOpen, 
-  Calendar, 
-  Users, 
-  Bed, 
-  CreditCard, 
-  BarChart, 
+import React, { useEffect } from 'react';
+import {
+  HelpCircle,
+  BookOpen,
+  Calendar,
+  Users,
+  Bed,
+  CreditCard,
+  BarChart,
   ChevronRight,
   Info
 } from 'lucide-react';
 
 export default function HelpPage() {
+  useEffect(() => {
+    document.title = 'Help & User Guide - Ocean View Resort';
+  }, []);
   const sections = [
     {
       title: "Getting Started",
@@ -69,31 +72,29 @@ export default function HelpPage() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="space-y-4 md:space-y-6 p-4 md:p-6">
       <div>
-        <h1 className="text-2xl font-black text-gray-800 flex items-center gap-2">
-          <HelpCircle className="text-[#0B3D6E]" /> Help & User Guide
-        </h1>
-        <p className="text-gray-500">Everything you need to know about using the management system.</p>
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800">Help & User Guide</h1>
+        <p className="text-xs md:text-sm text-gray-500 mt-1">Everything you need to know about using the management system.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {sections.map((section, idx) => (
-          <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-blue-50 rounded-lg text-[#0B3D6E]">
-                <section.icon size={20} />
+          <div key={idx} className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-3 md:mb-4">
+              <div className="p-2 md:p-3 bg-blue-50 rounded-lg text-[#0B3D6E]">
+                <section.icon size={18} className="md:w-5 md:h-5" />
               </div>
-              <h3 className="font-bold text-gray-800">{section.title}</h3>
+              <h3 className="text-base md:text-lg font-bold text-gray-800">{section.title}</h3>
             </div>
-            
+
             {section.content ? (
-              <p className="text-sm text-gray-600 leading-relaxed">{section.content}</p>
+              <p className="text-xs md:text-sm text-gray-600 leading-relaxed">{section.content}</p>
             ) : (
               <ul className="space-y-2">
                 {section.items?.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                    <ChevronRight size={14} className="mt-1 text-blue-400 flex-shrink-0" />
+                  <li key={i} className="flex items-start gap-2 text-xs md:text-sm text-gray-600">
+                    <ChevronRight size={14} className="mt-0.5 md:mt-1 text-blue-500 flex-shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -103,15 +104,15 @@ export default function HelpPage() {
         ))}
       </div>
 
-      <div className="bg-[#0B3D6E] text-white p-8 rounded-2xl shadow-lg flex flex-col md:flex-row items-center gap-6">
-        <div className="p-4 bg-white/10 rounded-full">
-          <Info size={32} />
+      <div className="bg-[#0B3D6E] text-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-4 md:gap-6">
+        <div className="p-3 md:p-4 bg-white/10 rounded-full">
+          <Info size={24} className="md:w-8 md:h-8" />
         </div>
-        <div>
-          <h3 className="text-xl font-bold mb-1">Need Technical Support?</h3>
-          <p className="text-blue-100 opacity-80 text-sm">If you encounter any issues or have suggestions for improvement, please contact the IT department or your system administrator.</p>
+        <div className="flex-1 text-center md:text-left">
+          <h3 className="text-lg md:text-xl font-bold mb-1">Need Technical Support?</h3>
+          <p className="text-blue-100 text-xs md:text-sm">If you encounter any issues or have suggestions for improvement, please contact the IT department or your system administrator.</p>
         </div>
-        <button className="md:ml-auto px-6 py-3 bg-white text-[#0B3D6E] font-bold rounded-xl hover:bg-blue-50 transition-colors">
+        <button className="px-4 md:px-6 py-2 md:py-3 bg-white text-[#0B3D6E] font-medium text-sm md:text-base rounded-lg hover:bg-blue-50 transition-colors whitespace-nowrap">
           Contact IT
         </button>
       </div>
