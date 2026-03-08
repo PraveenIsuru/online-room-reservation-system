@@ -6,6 +6,7 @@ import com.oceanview.reservation.dao.AuditDAO;
 import com.oceanview.reservation.dao.BillDAO;
 import com.oceanview.reservation.dao.DAOFactory;
 import com.oceanview.reservation.dao.RoomDAO;
+import com.oceanview.reservation.dto.BillDTO;
 import com.oceanview.reservation.model.AuditLog;
 import com.oceanview.reservation.model.Bill;
 import com.oceanview.reservation.model.Reservation;
@@ -60,6 +61,10 @@ public class BillingService {
 
     public Bill getBillByReservationId(int reservationId) {
         return billDAO.findByReservationId(reservationId);
+    }
+
+    public BillDTO getEnrichedBillByReservationId(int reservationId) {
+        return billDAO.findEnrichedByReservationId(reservationId);
     }
 
     public boolean payBill(int billId, PaymentMethod paymentMethod, Integer userId, String ipAddress) {

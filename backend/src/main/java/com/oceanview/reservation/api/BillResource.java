@@ -1,6 +1,6 @@
 package com.oceanview.reservation.api;
 
-import com.oceanview.reservation.model.Bill;
+import com.oceanview.reservation.dto.BillDTO;
 import com.oceanview.reservation.model.enums.PaymentMethod;
 import com.oceanview.reservation.service.BillingService;
 import com.oceanview.reservation.util.JwtUtil;
@@ -23,9 +23,9 @@ public class BillResource {
     @GET
     @Path("/reservation/{reservationId}")
     public Response getBillByReservation(@PathParam("reservationId") int reservationId) {
-        Bill bill = billingService.getBillByReservationId(reservationId);
+        BillDTO bill = billingService.getEnrichedBillByReservationId(reservationId);
         if (bill == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(bill).build();
+        return Response.ok(Map.of("data", bill)).build();
     }
 
     @PATCH
