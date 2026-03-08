@@ -2,6 +2,7 @@ package com.oceanview.reservation.service;
 
 import com.oceanview.reservation.dao.DAOFactory;
 import com.oceanview.reservation.dao.UserDAO;
+import com.oceanview.reservation.dto.LoginResponse;
 import com.oceanview.reservation.model.User;
 import com.oceanview.reservation.util.JwtUtil;
 import com.oceanview.reservation.util.PasswordUtil;
@@ -20,10 +21,13 @@ public class AuthService {
         this.userDAO = userDAO;
     }
 
-    public Optional<String> login(String username, String password) {
+    public Optional<LoginResponse> login(String username, String password) {
         return userDAO.findByUsername(username)
             .filter(User::isActive)
             .filter(user -> PasswordUtil.checkPassword(password, user.getPasswordHash()))
-            .map(JwtUtil::generateToken);
+            .map(user -> {
+                String token = JwtUtil.generateToken(user);
+                return new LoginResponse(user, token);
+            });
     }
 }

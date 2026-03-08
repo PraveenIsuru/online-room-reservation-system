@@ -23,14 +23,18 @@ public class AuthFilter implements ContainerRequestFilter, ContainerResponseFilt
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String path = requestContext.getUriInfo().getPath();
-
-        // Skip auth for login and root/hello (optional)
-        if (path.equals("auth/login") || path.equals("hello")) {
-            return;
-        }
+        System.out.println("AuthFilter: path=" + path + " method=" + requestContext.getMethod());
 
         // Handle CORS preflight
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
+            return;
+        }
+
+        // Skip auth for login and logout endpoints
+        if (path.equals("/auth/login") || path.equals("auth/login") ||
+            path.equals("/auth/logout") || path.equals("auth/logout") ||
+            path.equals("hello")) {
+            System.out.println("AuthFilter: Skipping auth for path=" + path);
             return;
         }
 

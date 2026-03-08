@@ -1,6 +1,7 @@
 package com.oceanview.reservation.service;
 
 import com.oceanview.reservation.dao.UserDAO;
+import com.oceanview.reservation.dto.LoginResponse;
 import com.oceanview.reservation.model.User;
 import com.oceanview.reservation.model.enums.UserRole;
 import com.oceanview.reservation.util.PasswordUtil;
@@ -44,10 +45,12 @@ class AuthServiceTest {
         when(userDAO.findByUsername(username)).thenReturn(Optional.of(user));
 
         // Act
-        Optional<String> token = authService.login(username, password);
+        Optional<LoginResponse> response = authService.login(username, password);
 
         // Assert
-        assertTrue(token.isPresent());
+        assertTrue(response.isPresent());
+        assertNotNull(response.get().getToken());
+        assertEquals(username, response.get().getUsername());
         verify(userDAO).findByUsername(username);
     }
 
@@ -67,10 +70,10 @@ class AuthServiceTest {
         when(userDAO.findByUsername(username)).thenReturn(Optional.of(user));
 
         // Act
-        Optional<String> token = authService.login(username, wrongPassword);
+        Optional<LoginResponse> response = authService.login(username, wrongPassword);
 
         // Assert
-        assertFalse(token.isPresent());
+        assertFalse(response.isPresent());
     }
 
     @Test
@@ -88,10 +91,10 @@ class AuthServiceTest {
         when(userDAO.findByUsername(username)).thenReturn(Optional.of(user));
 
         // Act
-        Optional<String> token = authService.login(username, password);
+        Optional<LoginResponse> response = authService.login(username, password);
 
         // Assert
-        assertFalse(token.isPresent());
+        assertFalse(response.isPresent());
     }
 
     @Test
@@ -103,9 +106,9 @@ class AuthServiceTest {
         when(userDAO.findByUsername(username)).thenReturn(Optional.empty());
 
         // Act
-        Optional<String> token = authService.login(username, password);
+        Optional<LoginResponse> response = authService.login(username, password);
 
         // Assert
-        assertFalse(token.isPresent());
+        assertFalse(response.isPresent());
     }
 }
