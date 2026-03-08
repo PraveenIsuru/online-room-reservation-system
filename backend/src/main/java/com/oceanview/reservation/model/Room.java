@@ -37,6 +37,18 @@ public class Room {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
+    public String getRoomTypeDisplay() {
+        if (roomType == null) return null;
+        switch (roomType) {
+            case STANDARD: return "Standard Room";
+            case DELUXE: return "Deluxe Room";
+            case SUITE: return "Suite";
+            case OCEAN_VIEW: return "Ocean View Room";
+            case PENTHOUSE: return "Penthouse Suite";
+            default: return roomType.name();
+        }
+    }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 

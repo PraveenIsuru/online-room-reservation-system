@@ -6,6 +6,7 @@ import com.oceanview.reservation.dao.AuditDAO;
 import com.oceanview.reservation.dao.DAOFactory;
 import com.oceanview.reservation.dao.ReservationDAO;
 import com.oceanview.reservation.dao.RoomDAO;
+import com.oceanview.reservation.dto.ReservationListDTO;
 import com.oceanview.reservation.model.AuditLog;
 import com.oceanview.reservation.model.Reservation;
 import com.oceanview.reservation.model.enums.ReservationStatus;
@@ -78,10 +79,34 @@ public class ReservationService {
             } else if (newStatus == ReservationStatus.CHECKED_OUT || newStatus == ReservationStatus.CANCELLED) {
                 roomDAO.updateStatus(oldReservation.getRoomId(), RoomStatus.AVAILABLE);
             }
-            
+
             logAudit(userId, "UPDATE", "RESERVATION", id, "{\"status\": \"" + oldReservation.getStatus() + "\"}", "{\"status\": \"" + newStatus + "\"}", ipAddress);
         }
         return updated;
+    }
+
+    public java.util.List<Reservation> listReservations(int offset, int limit, ReservationStatus status) {
+        return reservationDAO.findWithPagination(offset, limit, status);
+    }
+
+    public int countReservations(ReservationStatus status) {
+        return reservationDAO.countReservations(status);
+    }
+
+    public ReservationListDTO getEnrichedReservationById(int id) {
+        return reservationDAO.findEnrichedById(id);
+    }
+
+    public ReservationListDTO getEnrichedReservationByNumber(String number) {
+        return reservationDAO.findEnrichedByNumber(number);
+    }
+
+    public java.util.List<ReservationListDTO> listEnrichedReservations(int offset, int limit, ReservationStatus status, String search, Integer guestId) {
+        return reservationDAO.findEnrichedWithPagination(offset, limit, status, search, guestId);
+    }
+
+    public int countEnrichedReservations(ReservationStatus status, String search, Integer guestId) {
+        return reservationDAO.countEnrichedReservations(status, search, guestId);
     }
 
     private void logAudit(Integer userId, String action, String entityType, Integer entityId, String oldValue, String newValue, String ipAddress) {

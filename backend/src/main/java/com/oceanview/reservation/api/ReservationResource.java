@@ -1,5 +1,6 @@
 package com.oceanview.reservation.api;
 
+import com.oceanview.reservation.dto.ReservationListDTO;
 import com.oceanview.reservation.model.Reservation;
 import com.oceanview.reservation.model.enums.ReservationStatus;
 import com.oceanview.reservation.service.ReservationService;
@@ -11,6 +12,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
 import java.util.Map;
 
 @Path("/reservations")
@@ -21,19 +23,42 @@ public class ReservationResource {
     private final ReservationService reservationService = new ReservationService();
 
     @GET
+    public Response listReservations(
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit,
+            @QueryParam("status") String statusStr,
+            @QueryParam("search") String search,
+            @QueryParam("guestId") Integer guestId) {
+
+        ReservationStatus status = null;
+        if (statusStr != null && !statusStr.isEmpty()) {
+            try {
+                status = ReservationStatus.valueOf(statusStr);
+            } catch (IllegalArgumentException e) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Invalid status").build();
+            }
+        }
+
+        List<ReservationListDTO> data = reservationService.listEnrichedReservations(offset, limit, status, search, guestId);
+        int total = reservationService.countEnrichedReservations(status, search, guestId);
+
+        return Response.ok(Map.of("data", data, "total", total)).build();
+    }
+
+    @GET
     @Path("/{id}")
     public Response getReservationById(@PathParam("id") int id) {
-        Reservation res = reservationService.getReservationById(id);
+        ReservationListDTO res = reservationService.getEnrichedReservationById(id);
         if (res == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(res).build();
+        return Response.ok(Map.of("data", res)).build();
     }
 
     @GET
     @Path("/number/{number}")
     public Response getReservationByNumber(@PathParam("number") String number) {
-        Reservation res = reservationService.getReservationByNumber(number);
+        ReservationListDTO res = reservationService.getEnrichedReservationByNumber(number);
         if (res == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(res).build();
+        return Response.ok(Map.of("data", res)).build();
     }
 
     @POST
@@ -42,9 +67,9 @@ public class ReservationResource {
             Integer userId = getUserIdFromToken(request);
             String ipAddress = request.getRemoteAddr();
             Reservation created = reservationService.createReservation(reservation, userId, ipAddress);
-            return Response.status(Response.Status.CREATED).entity(created).build();
+            return Response.status(Response.Status.CREATED).entity(Map.of("data", created)).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(Map.of("message", e.getMessage())).build();
         }
     }
 

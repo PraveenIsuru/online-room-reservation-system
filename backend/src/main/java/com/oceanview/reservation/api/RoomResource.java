@@ -24,8 +24,9 @@ public class RoomResource {
     private final RoomService roomService = new RoomService();
 
     @GET
-    public List<Room> getRooms() {
-        return roomService.getAllRooms();
+    public Response getRooms() {
+        List<Room> rooms = roomService.getAllRooms();
+        return Response.ok(Map.of("data", rooms)).build();
     }
 
     @GET
@@ -34,7 +35,7 @@ public class RoomResource {
             @QueryParam("checkIn") String checkInStr,
             @QueryParam("checkOut") String checkOutStr,
             @QueryParam("type") String typeStr) {
-        
+
         if (checkInStr == null || checkOutStr == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("checkIn and checkOut dates are required")
@@ -44,10 +45,11 @@ public class RoomResource {
         try {
             LocalDate checkIn = LocalDate.parse(checkInStr);
             LocalDate checkOut = LocalDate.parse(checkOutStr);
+            long nights = java.time.temporal.ChronoUnit.DAYS.between(checkIn, checkOut);
             RoomType type = (typeStr != null && !typeStr.isEmpty()) ? RoomType.valueOf(typeStr) : null;
 
             List<Room> availableRooms = roomService.getAvailableRooms(checkIn, checkOut, type);
-            return Response.ok(availableRooms).build();
+            return Response.ok(Map.of("data", availableRooms, "nights", nights)).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Invalid parameters: " + e.getMessage())
