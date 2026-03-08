@@ -9,4 +9,6 @@ public interface GuestDAO {
     Guest findByContact(String contactOrEmail);
     int create(Guest guest);
     boolean update(Guest guest);
+    List<Guest> findWithPagination(int offset, int limit, String search);
+    int countGuests(String search);
 }

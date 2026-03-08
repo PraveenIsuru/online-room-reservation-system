@@ -91,6 +91,70 @@ public class GuestDAOImpl implements GuestDAO {
         }
     }
 
+    @Override
+    public List<Guest> findWithPagination(int offset, int limit, String search) {
+        StringBuilder sql = new StringBuilder(
+            "SELECT g.*, (SELECT COUNT(*) FROM reservations r WHERE r.guest_id = g.guest_id) AS reservation_count " +
+            "FROM guests g WHERE 1=1"
+        );
+        List<Object> params = new ArrayList<>();
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" AND (g.guest_name LIKE ? OR g.contact_number LIKE ? OR g.email LIKE ?)");
+            String pattern = "%" + search.trim() + "%";
+            params.add(pattern);
+            params.add(pattern);
+            params.add(pattern);
+        }
+        sql.append(" ORDER BY g.guest_id DESC LIMIT ? OFFSET ?");
+        params.add(limit);
+        params.add(offset);
+
+        List<Guest> list = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                Object param = params.get(i);
+                if (param instanceof String) ps.setString(i + 1, (String) param);
+                else if (param instanceof Integer) ps.setInt(i + 1, (Integer) param);
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Guest g = map(rs);
+                    g.setReservationCount(rs.getInt("reservation_count"));
+                    list.add(g);
+                }
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching guests with pagination", e);
+        }
+    }
+
+    @Override
+    public int countGuests(String search) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM guests g WHERE 1=1");
+        List<String> params = new ArrayList<>();
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" AND (g.guest_name LIKE ? OR g.contact_number LIKE ? OR g.email LIKE ?)");
+            String pattern = "%" + search.trim() + "%";
+            params.add(pattern);
+            params.add(pattern);
+            params.add(pattern);
+        }
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setString(i + 1, params.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+                return 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error counting guests", e);
+        }
+    }
+
     private Guest map(ResultSet rs) throws SQLException {
         Guest g = new Guest();
         g.setGuestId(rs.getInt("guest_id"));

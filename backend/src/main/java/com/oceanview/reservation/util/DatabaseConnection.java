@@ -8,7 +8,10 @@ import java.util.Properties;
 public class DatabaseConnection {
 
     private static volatile DatabaseConnection instance;
-    private Connection connection;
+
+    private String url;
+    private String username;
+    private String password;
 
     private static final String PROPS_FILE = "/db.properties";
 
@@ -17,13 +20,11 @@ public class DatabaseConnection {
             Properties props = new Properties();
             props.load(getClass().getResourceAsStream(PROPS_FILE));
             Class.forName(props.getProperty("db.driver"));
-            this.connection = DriverManager.getConnection(
-                props.getProperty("db.url"),
-                props.getProperty("db.username"),
-                props.getProperty("db.password")
-            );
+            this.url = props.getProperty("db.url");
+            this.username = props.getProperty("db.username");
+            this.password = props.getProperty("db.password");
         } catch (Exception e) {
-            throw new RuntimeException("Failed to connect to database", e);
+            throw new RuntimeException("Failed to initialise database configuration", e);
         }
     }
 
@@ -40,14 +41,9 @@ public class DatabaseConnection {
 
     public Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
-                // Reinitialise if connection dropped
-                instance = null;
-                return getInstance().getConnection();
-            }
+            return DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            throw new RuntimeException("Database connection check failed", e);
+            throw new RuntimeException("Failed to open database connection", e);
         }
-        return connection;
     }
 }

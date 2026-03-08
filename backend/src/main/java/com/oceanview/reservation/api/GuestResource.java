@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Map;
 
 @Path("/guests")
 @Produces(MediaType.APPLICATION_JSON)
@@ -20,8 +21,13 @@ public class GuestResource {
     private final GuestService guestService = new GuestService();
 
     @GET
-    public List<Guest> getGuests() {
-        return guestService.getAllGuests();
+    public Response getGuests(
+            @QueryParam("offset") @DefaultValue("0") int offset,
+            @QueryParam("limit") @DefaultValue("10") int limit,
+            @QueryParam("search") String search) {
+        List<Guest> data = guestService.listGuests(offset, limit, search);
+        int total = guestService.countGuests(search);
+        return Response.ok(Map.of("data", data, "total", total)).build();
     }
 
     @GET
@@ -31,16 +37,29 @@ public class GuestResource {
         if (guest == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(guest).build();
+        return Response.ok(Map.of("data", guest)).build();
+    }
+
+    @GET
+    @Path("/search")
+    public Response searchGuest(@QueryParam("contact") String contact) {
+        if (contact == null || contact.trim().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Contact parameter is required").build();
+        }
+        Guest guest = guestService.getGuestByContact(contact.trim());
+        if (guest == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(Map.of("data", guest)).build();
     }
 
     @POST
     public Response createGuest(Guest guest, @Context HttpServletRequest request) {
         Integer userId = getUserIdFromToken(request);
         String ipAddress = request.getRemoteAddr();
-        
+
         Guest created = guestService.createGuest(guest, userId, ipAddress);
-        return Response.status(Response.Status.CREATED).entity(created).build();
+        return Response.status(Response.Status.CREATED).entity(Map.of("data", created)).build();
     }
 
     @PUT
@@ -52,7 +71,7 @@ public class GuestResource {
 
         boolean updated = guestService.updateGuest(guest, userId, ipAddress);
         if (updated) {
-            return Response.ok(guest).build();
+            return Response.ok(Map.of("data", guest)).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

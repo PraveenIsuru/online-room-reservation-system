@@ -10,6 +10,7 @@ public class Guest {
     private String email;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private int reservationCount;
 
     public int getGuestId() { return guestId; }
     public void setGuestId(int guestId) { this.guestId = guestId; }
@@ -31,4 +32,7 @@ public class Guest {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public int getReservationCount() { return reservationCount; }
+    public void setReservationCount(int reservationCount) { this.reservationCount = reservationCount; }
 }

@@ -3,20 +3,28 @@ package com.oceanview.reservation.dto;
 import java.math.BigDecimal;
 
 public class DashboardStats {
-    private int totalGuests;
-    private int activeReservations;
-    private long availableRooms;
-    private BigDecimal totalRevenue;
+    private int todayCheckIns;
+    private int todayCheckOuts;
+    private int currentOccupancy;
+    private int totalRooms;
+    private BigDecimal monthlyRevenue;
+    private int totalGuestsThisMonth;
 
-    public int getTotalGuests() { return totalGuests; }
-    public void setTotalGuests(int totalGuests) { this.totalGuests = totalGuests; }
+    public int getTodayCheckIns() { return todayCheckIns; }
+    public void setTodayCheckIns(int todayCheckIns) { this.todayCheckIns = todayCheckIns; }
 
-    public int getActiveReservations() { return activeReservations; }
-    public void setActiveReservations(int activeReservations) { this.activeReservations = activeReservations; }
+    public int getTodayCheckOuts() { return todayCheckOuts; }
+    public void setTodayCheckOuts(int todayCheckOuts) { this.todayCheckOuts = todayCheckOuts; }
 
-    public long getAvailableRooms() { return availableRooms; }
-    public void setAvailableRooms(long availableRooms) { this.availableRooms = availableRooms; }
+    public int getCurrentOccupancy() { return currentOccupancy; }
+    public void setCurrentOccupancy(int currentOccupancy) { this.currentOccupancy = currentOccupancy; }
 
-    public BigDecimal getTotalRevenue() { return totalRevenue; }
-    public void setTotalRevenue(BigDecimal totalRevenue) { this.totalRevenue = totalRevenue; }
+    public int getTotalRooms() { return totalRooms; }
+    public void setTotalRooms(int totalRooms) { this.totalRooms = totalRooms; }
+
+    public BigDecimal getMonthlyRevenue() { return monthlyRevenue; }
+    public void setMonthlyRevenue(BigDecimal monthlyRevenue) { this.monthlyRevenue = monthlyRevenue; }
+
+    public int getTotalGuestsThisMonth() { return totalGuestsThisMonth; }
+    public void setTotalGuestsThisMonth(int totalGuestsThisMonth) { this.totalGuestsThisMonth = totalGuestsThisMonth; }
 }

@@ -21,8 +21,20 @@ public class GuestService {
         return guestDAO.findAll();
     }
 
+    public List<Guest> listGuests(int offset, int limit, String search) {
+        return guestDAO.findWithPagination(offset, limit, search);
+    }
+
+    public int countGuests(String search) {
+        return guestDAO.countGuests(search);
+    }
+
     public Guest getGuestById(int id) {
         return guestDAO.findById(id);
+    }
+
+    public Guest getGuestByContact(String contact) {
+        return guestDAO.findByContact(contact);
     }
 
     public Guest createGuest(Guest guest, Integer userId, String ipAddress) {
